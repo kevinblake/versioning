@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using Puzzlebox.Versioning.Business;
+using Puzzlebox.Versioning.Business.Extensions;
 
 namespace Puzzlebox.Versioning.Controllers
 {
@@ -7,10 +8,9 @@ namespace Puzzlebox.Versioning.Controllers
     {
         //
         // GET: /Home/
-
         public ActionResult Index()
         {
-			return Json(VersionInformation.GetVersionInformation(), JsonRequestBehavior.AllowGet);
+			return Content(VersionInformation.GetVersionInformation().ToJson(), "application/json");
         }
 
     }

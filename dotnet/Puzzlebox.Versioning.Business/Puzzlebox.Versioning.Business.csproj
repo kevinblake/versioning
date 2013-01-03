@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\VersionInformationExtensions.cs" />
     <Compile Include="VersionInformation.cs" />
     <Compile Include="Entities\AssemblyInformationEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
