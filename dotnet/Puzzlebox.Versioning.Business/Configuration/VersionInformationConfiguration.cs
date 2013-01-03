@@ -8,7 +8,9 @@ namespace Puzzlebox.Versioning.Business.Configuration
 		private const string localOnly = "localOnly";
 		private const string httpHandler = "httpHandler";
 		private const string allAssemblies = "allAssemblies";
-		
+		private const string includeWebApplicationName = "includeWebApplicationName";
+		private const string excludeBuildDate = "excludeBuildDate";
+
 		private static readonly VersionInformationConfiguration ConfigurationSettings;
 
 
@@ -39,15 +41,29 @@ namespace Puzzlebox.Versioning.Business.Configuration
 		[ConfigurationProperty(localOnly, DefaultValue = true, IsRequired = false)]
 		public bool LocalOnly
 		{
-			get { return (bool)this[localOnly]; }
+			get { return (bool) this[localOnly]; }
 			set { this[localOnly] = value; }
 		}
 
 		[ConfigurationProperty(allAssemblies, DefaultValue = false, IsRequired = false)]
 		public bool AllAssemblies
 		{
-			get { return (bool)this[allAssemblies]; }
+			get { return (bool) this[allAssemblies]; }
 			set { this[allAssemblies] = value; }
+		}
+
+		[ConfigurationProperty(includeWebApplicationName, DefaultValue = false, IsRequired = false)]
+		public bool IncludeWebApplicationName
+		{
+			get { return (bool) this[includeWebApplicationName]; }
+			set { this[includeWebApplicationName] = value; }
+		}
+
+		[ConfigurationProperty(excludeBuildDate, DefaultValue = false, IsRequired = false)]
+		public bool ExcludeBuildDate
+		{
+			get { return (bool) this[excludeBuildDate]; }
+			set { this[excludeBuildDate] = value; }
 		}
 	}
 }

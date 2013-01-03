@@ -32,6 +32,11 @@ namespace Puzzlebox.Versioning.Business
 			var versionInformationEntity = new VersionInformationEntity();
 			versionInformationEntity.WebApplicationVersion = GetAssemblyInformationFromAssembly(applicationAssembly);
 
+			if (!VersionInformationConfiguration.Settings.IncludeWebApplicationName)
+			{
+				versionInformationEntity.WebApplicationVersion.Name = null;
+			}
+
 			if (VersionInformationConfiguration.Settings.AllAssemblies)
 			{
 				versionInformationEntity.Assemblies = myAssemblies.Where(t => !t.IsDynamic && !t.GlobalAssemblyCache)
@@ -44,12 +49,20 @@ namespace Puzzlebox.Versioning.Business
 
 		private static AssemblyInformationEntity GetAssemblyInformationFromAssembly(Assembly applicationAssembly)
 		{
-			return new AssemblyInformationEntity
+			var entity = new AssemblyInformationEntity
 				{
-					Name = applicationAssembly.GetName().Name,
-					VersionNumber = applicationAssembly.GetName().Version.ToString(),
-					BuildDate = RetrieveLinkerTimestamp(applicationAssembly).GetValueOrDefault().ToString(CultureInfo.InvariantCulture)
+					VersionNumber = applicationAssembly.GetName().Version.ToString()
 				};
+
+			if (!VersionInformationConfiguration.Settings.ExcludeBuildDate)
+			{
+				entity.BuildDate =
+					RetrieveLinkerTimestamp(applicationAssembly).GetValueOrDefault().ToString(CultureInfo.InvariantCulture);
+			}
+
+			entity.Name = applicationAssembly.GetName().Name;
+
+			return entity;
 		}
 
 		private static Assembly GetWebEntryAssembly()
