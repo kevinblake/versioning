@@ -7,8 +7,10 @@ namespace Puzzlebox.Versioning.Business.Entities
 		public VersionInformationEntity()
 		{
 			Assemblies = new List<AssemblyInformationEntity>();
-
 		}
+
+		public AssemblyInformationEntity WebApplicationVersion { get; set; }
+
 		public IList<AssemblyInformationEntity> Assemblies { get; set; }
 	}
 

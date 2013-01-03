@@ -14,15 +14,40 @@ namespace Puzzlebox.Versioning.Business
 		{
 			var myAssemblies = Thread.GetDomain().GetAssemblies();
 
+			var applicationAssembly = GetWebEntryAssembly();
+
 			return new VersionInformationEntity
 				{
-					Assemblies = myAssemblies.Where(t => !t.IsDynamic && !t.GlobalAssemblyCache).Select(t => new AssemblyInformationEntity
-						{
-							Name = t.GetName().Name,
-							VersionNumber = t.GetName().Version.ToString(),
-							BuildDate = RetrieveLinkerTimestamp(t).GetValueOrDefault().ToString(CultureInfo.InvariantCulture)	
-						}).OrderBy(t => t.Name).ToList()
+					WebApplicationVersion = GetAssemblyInformationFromAssembly(applicationAssembly),
+					Assemblies = myAssemblies.Where(t => !t.IsDynamic && !t.GlobalAssemblyCache).Select(GetAssemblyInformationFromAssembly).OrderBy(t => t.Name).ToList()
 				};
+		}
+
+		private static AssemblyInformationEntity GetAssemblyInformationFromAssembly(Assembly applicationAssembly)
+		{
+			return new AssemblyInformationEntity
+				{
+					Name = applicationAssembly.GetName().Name,
+					VersionNumber = applicationAssembly.GetName().Version.ToString(),
+					BuildDate = RetrieveLinkerTimestamp(applicationAssembly).GetValueOrDefault().ToString(CultureInfo.InvariantCulture)
+				};
+		}
+		
+		static private Assembly GetWebEntryAssembly()
+		{
+			if (System.Web.HttpContext.Current == null ||
+				System.Web.HttpContext.Current.ApplicationInstance == null)
+			{
+				return null;
+			}
+
+			var type = System.Web.HttpContext.Current.ApplicationInstance.GetType();
+			while (type != null && type.Namespace == "ASP")
+			{
+				type = type.BaseType;
+			}
+
+			return type == null ? null : type.Assembly;
 		}
 
 		// Stolen from Joe Spivey (http://stackoverflow.com/questions/1600962/displaying-the-build-date)
