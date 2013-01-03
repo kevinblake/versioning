@@ -34,6 +34,7 @@
       <HintPath>..\Puzzlebox.Versioning\bin\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -43,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\VersionInformationConfiguration.cs" />
     <Compile Include="Extensions\VersionInformationExtensions.cs" />
     <Compile Include="VersionInformation.cs" />
     <Compile Include="Entities\AssemblyInformationEntity.cs" />

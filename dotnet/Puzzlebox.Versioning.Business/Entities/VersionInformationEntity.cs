@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Puzzlebox.Versioning.Business.Entities
 {
@@ -6,11 +7,11 @@ namespace Puzzlebox.Versioning.Business.Entities
 	{
 		public VersionInformationEntity()
 		{
-			Assemblies = new List<AssemblyInformationEntity>();
 		}
 
 		public AssemblyInformationEntity WebApplicationVersion { get; set; }
 
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 		public IList<AssemblyInformationEntity> Assemblies { get; set; }
 	}
 

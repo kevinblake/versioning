@@ -7,6 +7,11 @@ namespace Puzzlebox.Versioning.Business.Extensions
 	{
 		public static string ToJson(this VersionInformationEntity entity, Formatting formatting)
 		{
+			if (entity == null)
+			{
+				return string.Empty;
+			}
+
 			var settings = new JsonSerializerSettings
 				{
 					PreserveReferencesHandling = PreserveReferencesHandling.None,

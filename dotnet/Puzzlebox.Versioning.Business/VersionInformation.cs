@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Web;
+using Puzzlebox.Versioning.Business.Configuration;
 using Puzzlebox.Versioning.Business.Entities;
 
 namespace Puzzlebox.Versioning.Business
@@ -12,15 +14,32 @@ namespace Puzzlebox.Versioning.Business
 	{
 		public static VersionInformationEntity GetVersionInformation()
 		{
+			if (!VersionInformationConfiguration.Settings.Enabled)
+			{
+				return null;
+			}
+
+			if (HttpContext.Current != null && VersionInformationConfiguration.Settings.LocalOnly &&
+			    !HttpContext.Current.Request.IsLocal)
+			{
+				return null;
+			}
+
 			var myAssemblies = Thread.GetDomain().GetAssemblies();
 
 			var applicationAssembly = GetWebEntryAssembly();
 
-			return new VersionInformationEntity
-				{
-					WebApplicationVersion = GetAssemblyInformationFromAssembly(applicationAssembly),
-					Assemblies = myAssemblies.Where(t => !t.IsDynamic && !t.GlobalAssemblyCache).Select(GetAssemblyInformationFromAssembly).OrderBy(t => t.Name).ToList()
-				};
+			var versionInformationEntity = new VersionInformationEntity();
+			versionInformationEntity.WebApplicationVersion = GetAssemblyInformationFromAssembly(applicationAssembly);
+
+			if (VersionInformationConfiguration.Settings.AllAssemblies)
+			{
+				versionInformationEntity.Assemblies = myAssemblies.Where(t => !t.IsDynamic && !t.GlobalAssemblyCache)
+				                                                  .Select(GetAssemblyInformationFromAssembly)
+				                                                  .OrderBy(t => t.Name).ToList();
+			}
+
+			return versionInformationEntity;
 		}
 
 		private static AssemblyInformationEntity GetAssemblyInformationFromAssembly(Assembly applicationAssembly)
@@ -32,11 +51,11 @@ namespace Puzzlebox.Versioning.Business
 					BuildDate = RetrieveLinkerTimestamp(applicationAssembly).GetValueOrDefault().ToString(CultureInfo.InvariantCulture)
 				};
 		}
-		
-		static private Assembly GetWebEntryAssembly()
+
+		private static Assembly GetWebEntryAssembly()
 		{
 			if (System.Web.HttpContext.Current == null ||
-				System.Web.HttpContext.Current.ApplicationInstance == null)
+			    System.Web.HttpContext.Current.ApplicationInstance == null)
 			{
 				return null;
 			}
@@ -80,6 +99,5 @@ namespace Puzzlebox.Versioning.Business
 			dt = dt.AddHours(TimeZone.CurrentTimeZone.GetUtcOffset(dt).Hours);
 			return dt;
 		}
-
 	}
 }
