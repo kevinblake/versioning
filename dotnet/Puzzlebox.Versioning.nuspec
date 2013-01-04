@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<package >
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Puzzlebox.Version.Information</id>
-    <version></version>
+    <version>1.0</version>
     <title>Version Information for ASP.NET sites</title>
     <authors>Kevin Blake</authors>
     <owners>Kevin Blake</owners>
@@ -12,4 +12,6 @@
     <description>Display version information for all (or some) DLLs included in your ASP.NET site.</description>
     <tags>asp.net aspnet versioning assembly version mvc</tags>
   </metadata>
+  <files />
 </package>
+
