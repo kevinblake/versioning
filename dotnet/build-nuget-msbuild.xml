@@ -51,7 +51,7 @@
   <Target Name="PrepareFiles" DependsOnTargets="Compile">
     <ItemGroup>
       <BinFiles Include="$(BuildArtifactsFolder)\*.dll" Exclude="$(BuildArtifactsFolder)\*.Test.dll;$(BuildArtifactsFolder)\*.Specs.dll;$(BuildArtifactsFolder)\NewtonSoft.Json.dll" />
-      <ContentFiles Include="$(RootDir)\**\*.config.transform" />
+      <ContentFiles Include="$(RootDir)\**\*.config.transform" Exclude="$(RootDir)\packages\**\*"  />
       <PackageFile Include="$(RootDir)\$(ApplicationName).nuspec" />
     </ItemGroup>
   <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildArtifactsFolder)\lib\net20" />

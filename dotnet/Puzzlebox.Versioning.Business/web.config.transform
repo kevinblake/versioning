@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <configSections>
+    <section name="version.info" type="Puzzlebox.Versioning.Business.Configuration.VersionInformationConfiguration" />
+  </configSections>
+  <version.info enabled="true" httpHandler="true" allAssemblies="true" localOnly="true" includeWebApplicationName="true" excludeBuildDate="false" />
+  <system.web>
+    <httpHandlers>
+      <add verb="GET" path="version" type="Puzzlebox.Versioning.Business.VersionInformationHandler" />
+    </httpHandlers>
+  </system.web>
+  <system.webServer>
+    <handlers>
+      <add name="VersionInformationHandler" verb="*" path="version" type="Puzzlebox.Versioning.Business.VersionInformationHandler" />
+    </handlers>
+  </system.webServer>
+</configuration>
