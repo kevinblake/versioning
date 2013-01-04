@@ -6,8 +6,8 @@
     <title>Version Information for ASP.NET sites</title>
     <authors>Kevin Blake</authors>
     <owners>Kevin Blake</owners>
-    <licenseUrl>http://www.kevinblake.co.uk/</licenseUrl>
-    <projectUrl>http://www.kevinblake.co.uk/</projectUrl>
+    <licenseUrl>https://github.com/kevinblake/versioning</licenseUrl>
+    <projectUrl>https://github.com/kevinblake/versioning</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Display version information for all (or some) DLLs included in your ASP.NET site.</description>
     <tags>asp.net aspnet versioning assembly version mvc</tags>
