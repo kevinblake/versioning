@@ -5,6 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Web;
+using System.Web.Caching;
+using Puzzlebox.Versioning.Business.CacheHelpers;
 using Puzzlebox.Versioning.Business.Configuration;
 using Puzzlebox.Versioning.Business.Entities;
 
@@ -25,26 +27,32 @@ namespace Puzzlebox.Versioning.Business
 				return null;
 			}
 
-			var myAssemblies = Thread.GetDomain().GetAssemblies();
+			var cachedVersionInformationEntity = new InMemoryCache().Get("FacebookPagePost", null, Cache.NoAbsoluteExpiration, TimeSpan.FromDays(30), () =>
+				{
+					var myAssemblies = Thread.GetDomain().GetAssemblies();
+					var applicationAssembly = GetWebEntryAssembly();
 
-			var applicationAssembly = GetWebEntryAssembly();
+					var versionInformationEntity = new VersionInformationEntity();
+					versionInformationEntity.WebApplicationVersion =GetAssemblyInformationFromAssembly(applicationAssembly);
 
-			var versionInformationEntity = new VersionInformationEntity();
-			versionInformationEntity.WebApplicationVersion = GetAssemblyInformationFromAssembly(applicationAssembly);
+					if (!VersionInformationConfiguration.Settings.IncludeWebApplicationName)
+					{
+						versionInformationEntity.WebApplicationVersion.Name = null;
+					}
 
-			if (!VersionInformationConfiguration.Settings.IncludeWebApplicationName)
-			{
-				versionInformationEntity.WebApplicationVersion.Name = null;
-			}
+					if (VersionInformationConfiguration.Settings.AllAssemblies)
+					{
+						versionInformationEntity.Assemblies =
+							myAssemblies.Where(
+								t => !t.IsDynamic && !t.GlobalAssemblyCache)
+							            .Select(
+								            GetAssemblyInformationFromAssembly)
+							            .OrderBy(t => t.Name).ToList();
+					}
+					return versionInformationEntity;
+				});
 
-			if (VersionInformationConfiguration.Settings.AllAssemblies)
-			{
-				versionInformationEntity.Assemblies = myAssemblies.Where(t => !t.IsDynamic && !t.GlobalAssemblyCache)
-				                                                  .Select(GetAssemblyInformationFromAssembly)
-				                                                  .OrderBy(t => t.Name).ToList();
-			}
-
-			return versionInformationEntity;
+			return cachedVersionInformationEntity;
 		}
 
 		private static AssemblyInformationEntity GetAssemblyInformationFromAssembly(Assembly applicationAssembly)

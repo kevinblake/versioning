@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CacheHelpers\InMemoryCache.cs" />
     <Compile Include="Configuration\VersionInformationConfiguration.cs" />
     <Compile Include="Extensions\VersionInformationExtensions.cs" />
     <Compile Include="VersionInformation.cs" />
