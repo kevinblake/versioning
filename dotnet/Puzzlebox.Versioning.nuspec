@@ -11,6 +11,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Display version information for all (or some) DLLs included in your ASP.NET site.</description>
     <tags>asp.net aspnet versioning assembly version mvc</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" />
+    </dependencies>
   </metadata>
   <files />
 </package>
