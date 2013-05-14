@@ -9,7 +9,7 @@
   <UsingTask AssemblyFile="$(MSBuildNuGetTasksLib)" TaskName="MSBuild.NuGet.Tasks.Pack" />
 
   <PropertyGroup Condition="'$(PackageVersion)' == ''">
-  <PackageVersion>1.0.0.1</PackageVersion>
+  <PackageVersion>1.0.0.2</PackageVersion>
   </PropertyGroup>
   
   <PropertyGroup>
