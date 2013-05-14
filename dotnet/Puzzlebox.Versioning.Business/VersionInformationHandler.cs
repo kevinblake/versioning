@@ -14,7 +14,19 @@ namespace Puzzlebox.Versioning.Business
 			}
 
 			context.Response.ContentType = "application/json";
-			context.Response.Write(VersionInformation.GetVersionInformation().ToJson());
+
+	        string jsoncallback = context.Request.QueryString.Get("callback");
+
+			var json = VersionInformation.GetVersionInformation().ToJson();
+
+			if (string.IsNullOrEmpty(jsoncallback))
+			{
+				context.Response.Write(json);
+			}
+			else
+			{
+				context.Response.Write(string.Format("{0}({1})", jsoncallback, json));
+			}
 		}
 
 		public bool IsReusable { get; private set; }
