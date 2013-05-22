@@ -16,8 +16,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Puzzlebox.Versioning.Business\bin\Release\PuzzleboxVersion.dll" target="lib\net45" />
-    <file src="Puzzlebox.Versioning.Business\web.config.transform" target="content" />
+    <file src="dotnet\Puzzlebox.Versioning.Business\bin\Release\PuzzleboxVersion.dll" target="lib\net45" />
+    <file src="dotnet\Puzzlebox.Versioning.Business\web.config.transform" target="content" />
   </files>
 </package>
 
