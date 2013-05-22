@@ -13,7 +13,7 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <ApplicationName>Puzzlebox.Versioning</ApplicationName>
+    <ApplicationName>Puzzlebox.Version.Information</ApplicationName>
     <RootDir>$(MSBuildProjectDirectory)</RootDir>
     <BuildDir>$(RootDir)\Build</BuildDir>
     <BuildArtifactsFolder>$(BuildDir)\buildartifacts</BuildArtifactsFolder>
