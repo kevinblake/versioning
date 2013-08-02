@@ -22,18 +22,18 @@ namespace Puzzlebox.Versioning.Business
 			}
 
 			if (HttpContext.Current != null && VersionInformationConfiguration.Settings.LocalOnly &&
-			    !HttpContext.Current.Request.IsLocal)
+				!HttpContext.Current.Request.IsLocal)
 			{
 				return null;
 			}
 
-			var cachedVersionInformationEntity = new InMemoryCache().Get("FacebookPagePost", null, Cache.NoAbsoluteExpiration, TimeSpan.FromDays(30), () =>
+			var cachedVersionInformationEntity = new InMemoryCache().Get("VersionInformation", null, Cache.NoAbsoluteExpiration, TimeSpan.FromDays(30), () =>
 				{
 					var myAssemblies = Thread.GetDomain().GetAssemblies();
 					var applicationAssembly = GetWebEntryAssembly();
 
 					var versionInformationEntity = new VersionInformationEntity();
-					versionInformationEntity.WebApplicationVersion =GetAssemblyInformationFromAssembly(applicationAssembly);
+					versionInformationEntity.WebApplicationVersion = GetAssemblyInformationFromAssembly(applicationAssembly);
 
 					if (!VersionInformationConfiguration.Settings.IncludeWebApplicationName)
 					{
@@ -44,10 +44,10 @@ namespace Puzzlebox.Versioning.Business
 					{
 						versionInformationEntity.Assemblies =
 							myAssemblies.Where(
-								t => !t.IsDynamic && !t.GlobalAssemblyCache)
-							            .Select(
-								            GetAssemblyInformationFromAssembly)
-							            .OrderBy(t => t.Name).ToList();
+								t => !t.IsDynamic && (!t.GlobalAssemblyCache || VersionInformationConfiguration.Settings.IncludeGac))
+										.Select(
+											GetAssemblyInformationFromAssembly)
+										.OrderBy(t => t.Name).ToList();
 					}
 					return versionInformationEntity;
 				});
@@ -70,13 +70,15 @@ namespace Puzzlebox.Versioning.Business
 
 			entity.Name = applicationAssembly.GetName().Name;
 
+			entity.Gac = applicationAssembly.GlobalAssemblyCache;
+
 			return entity;
 		}
 
 		private static Assembly GetWebEntryAssembly()
 		{
 			if (System.Web.HttpContext.Current == null ||
-			    System.Web.HttpContext.Current.ApplicationInstance == null)
+				System.Web.HttpContext.Current.ApplicationInstance == null)
 			{
 				return null;
 			}

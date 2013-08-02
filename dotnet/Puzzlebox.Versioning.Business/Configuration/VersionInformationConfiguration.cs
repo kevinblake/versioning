@@ -10,6 +10,7 @@ namespace Puzzlebox.Versioning.Business.Configuration
 		private const string allAssemblies = "allAssemblies";
 		private const string includeWebApplicationName = "includeWebApplicationName";
 		private const string excludeBuildDate = "excludeBuildDate";
+		private const string includeGac = "includeGAC";
 
 		private static readonly VersionInformationConfiguration ConfigurationSettings;
 
@@ -64,6 +65,14 @@ namespace Puzzlebox.Versioning.Business.Configuration
 		{
 			get { return (bool) this[excludeBuildDate]; }
 			set { this[excludeBuildDate] = value; }
+		}
+
+
+		[ConfigurationProperty(includeGac, DefaultValue = false, IsRequired = false)]
+		public bool IncludeGac
+		{
+			get { return (bool)this[includeGac]; }
+			set { this[includeGac] = value; }
 		}
 	}
 }

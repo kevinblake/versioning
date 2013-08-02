@@ -15,7 +15,8 @@ namespace Puzzlebox.Versioning.Business.Extensions
 			var settings = new JsonSerializerSettings
 				{
 					PreserveReferencesHandling = PreserveReferencesHandling.None,
-					NullValueHandling = NullValueHandling.Ignore
+					NullValueHandling = NullValueHandling.Ignore,
+					DefaultValueHandling = DefaultValueHandling.Ignore
 				};
 
 			return JsonConvert.SerializeObject(entity, formatting, settings);
