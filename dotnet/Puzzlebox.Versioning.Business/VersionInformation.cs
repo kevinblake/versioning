@@ -77,13 +77,13 @@ namespace Puzzlebox.Versioning.Business
 
 		private static Assembly GetWebEntryAssembly()
 		{
-			if (System.Web.HttpContext.Current == null ||
-				System.Web.HttpContext.Current.ApplicationInstance == null)
+			if (HttpContext.Current == null ||
+				HttpContext.Current.ApplicationInstance == null)
 			{
 				return null;
 			}
 
-			var type = System.Web.HttpContext.Current.ApplicationInstance.GetType();
+			var type = HttpContext.Current.ApplicationInstance.GetType();
 			while (type != null && type.Namespace == "ASP")
 			{
 				type = type.BaseType;
@@ -97,6 +97,11 @@ namespace Puzzlebox.Versioning.Business
 		{
 			if (t.IsDynamic) return null;
 			var filePath = t.Location;
+			if (String.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
+			{
+				return null;
+			}
+
 			const int cPeHeaderOffset = 60;
 			const int cLinkerTimestampOffset = 8;
 			var b = new byte[2048];
@@ -104,7 +109,7 @@ namespace Puzzlebox.Versioning.Business
 
 			try
 			{
-				s = new System.IO.FileStream(filePath, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+				s = new FileStream(filePath, FileMode.Open, FileAccess.Read);
 				s.Read(b, 0, 2048);
 			}
 			finally
@@ -115,8 +120,8 @@ namespace Puzzlebox.Versioning.Business
 				}
 			}
 
-			var i = System.BitConverter.ToInt32(b, cPeHeaderOffset);
-			var secondsSince1970 = System.BitConverter.ToInt32(b, i + cLinkerTimestampOffset);
+			var i = BitConverter.ToInt32(b, cPeHeaderOffset);
+			var secondsSince1970 = BitConverter.ToInt32(b, i + cLinkerTimestampOffset);
 			var dt = new DateTime(1970, 1, 1, 0, 0, 0);
 			dt = dt.AddSeconds(secondsSince1970);
 			dt = dt.AddHours(TimeZone.CurrentTimeZone.GetUtcOffset(dt).Hours);
