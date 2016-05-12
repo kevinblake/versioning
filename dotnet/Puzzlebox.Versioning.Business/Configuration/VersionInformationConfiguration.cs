@@ -9,10 +9,12 @@ namespace Puzzlebox.Versioning.Business.Configuration
 		private const string httpHandler = "httpHandler";
 		private const string allAssemblies = "allAssemblies";
 		private const string includeWebApplicationName = "includeWebApplicationName";
-		private const string excludeBuildDate = "excludeBuildDate";
+		private const string includeBuildDate = "includeBuildDate";
 		private const string includeGac = "includeGAC";
+	    private const string includeMachineName = "includeMachineName";
 
-		private static readonly VersionInformationConfiguration ConfigurationSettings;
+
+        private static readonly VersionInformationConfiguration ConfigurationSettings;
 
 
 		static VersionInformationConfiguration()
@@ -60,11 +62,11 @@ namespace Puzzlebox.Versioning.Business.Configuration
 			set { this[includeWebApplicationName] = value; }
 		}
 
-		[ConfigurationProperty(excludeBuildDate, DefaultValue = false, IsRequired = false)]
-		public bool ExcludeBuildDate
+		[ConfigurationProperty(includeBuildDate, DefaultValue = false, IsRequired = false)]
+		public bool IncludeBuildDate
 		{
-			get { return (bool) this[excludeBuildDate]; }
-			set { this[excludeBuildDate] = value; }
+			get { return (bool) this[includeBuildDate]; }
+			set { this[includeBuildDate] = value; }
 		}
 
 
@@ -74,5 +76,14 @@ namespace Puzzlebox.Versioning.Business.Configuration
 			get { return (bool)this[includeGac]; }
 			set { this[includeGac] = value; }
 		}
-	}
+
+        [ConfigurationProperty(includeMachineName, DefaultValue = false, IsRequired = false)]
+        public bool IncludeMachineName
+        {
+            get { return (bool)this[includeMachineName]; }
+            set { this[includeMachineName] = value; }
+        }
+
+        
+    }
 }

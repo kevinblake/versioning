@@ -40,7 +40,12 @@ namespace Puzzlebox.Versioning.Business
 						versionInformationEntity.WebApplicationVersion.Name = null;
 					}
 
-					if (VersionInformationConfiguration.Settings.AllAssemblies)
+                    if (!VersionInformationConfiguration.Settings.IncludeMachineName)
+                    {
+                        versionInformationEntity.WebApplicationVersion.MachineName = null;
+                    }
+
+                    if (VersionInformationConfiguration.Settings.AllAssemblies)
 					{
 						versionInformationEntity.Assemblies =
 							myAssemblies.Where(
@@ -62,17 +67,25 @@ namespace Puzzlebox.Versioning.Business
 					VersionNumber = applicationAssembly.GetName().Version.ToString()
 				};
 
-			if (!VersionInformationConfiguration.Settings.ExcludeBuildDate)
+			if (VersionInformationConfiguration.Settings.IncludeBuildDate)
 			{
 				entity.BuildDate =
 					RetrieveLinkerTimestamp(applicationAssembly).GetValueOrDefault().ToString(CultureInfo.InvariantCulture);
 			}
 
+		    if (VersionInformationConfiguration.Settings.IncludeMachineName)
+		    {
+		        entity.MachineName = Environment.MachineName;
+		    }
+
 			entity.Name = applicationAssembly.GetName().Name;
 
 			entity.Gac = applicationAssembly.GlobalAssemblyCache;
 
-			return entity;
+		    
+
+
+            return entity;
 		}
 
 		private static Assembly GetWebEntryAssembly()

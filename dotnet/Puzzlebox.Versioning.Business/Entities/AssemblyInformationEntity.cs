@@ -9,5 +9,7 @@
 		public string BuildDate { get; set; }
 
 		public bool Gac { get; set; }
+
+        public string MachineName { get; set; }
 	}
 }
