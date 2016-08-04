@@ -67,7 +67,7 @@ namespace Puzzlebox.Versioning.Business
 					VersionNumber = applicationAssembly.GetName().Version.ToString()
 				};
 
-			if (VersionInformationConfiguration.Settings.IncludeBuildDate)
+			if (!VersionInformationConfiguration.Settings.ExcludeBuildDate)
 			{
 				entity.BuildDate =
 					RetrieveLinkerTimestamp(applicationAssembly).GetValueOrDefault().ToString(CultureInfo.InvariantCulture);

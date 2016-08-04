@@ -26,6 +26,10 @@ includeWebApplicationName=true|false
 
 Hide the web applcation name, when set to false.
 
+includeMachineName=true|false
+
+Hide the web machine name, when set to false.
+
 excludeBuildDate=true|false
 
 Do not show the build date (true).  Helpful if you'd prefer to hide this information from your "visitors".
